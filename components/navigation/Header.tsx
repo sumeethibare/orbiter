@@ -23,6 +23,7 @@ const Header: React.FC = () => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [compact, setCompact] = useState(false);
 
   /* ---------------- Lock body scroll on mobile ---------------- */
   useEffect(() => {
@@ -37,6 +38,20 @@ const Header: React.FC = () => {
     setMobileOpen(false);
     setOpenMenu(null);
   }, [pathname]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setCompact(window.scrollY > 16);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const h = compact ? 64 : 80;
+    document.documentElement.style.setProperty('--header-h', `${h}px`);
+  }, [compact]);
 
   const navigate = (href: string) => {
     if (href === '/' && pathname === '/') {
@@ -62,10 +77,10 @@ const Header: React.FC = () => {
         const showSub = SUBMENU_FLAGS[cat.id] === 1;
 
         return (
-          <div key={cat.id} className="border-b border-neutral-800 last:border-0">
+          <div key={cat.id} className="border-b border-neutral-200 last:border-0">
             <Link
               href={`/products#${cat.id}`}
-              className="block px-4 py-3 text-sm font-medium text-gray-300 hover:bg-green-500/5 hover:text-green-400 transition-colors rounded-lg"
+              className="block px-4 py-3 text-sm font-medium text-neutral-800 hover:bg-green-50 hover:text-green-700 transition-colors rounded-lg"
             >
               {cat.name}
             </Link>
@@ -75,7 +90,7 @@ const Header: React.FC = () => {
                 <Link
                   key={p.id}
                   href={`/products#${p.id}`}
-                  className="block pl-8 pr-4 py-2 text-xs text-gray-400 hover:text-green-400 transition"
+                  className="block pl-8 pr-4 py-2 text-xs text-neutral-700 hover:text-green-700 transition"
                 >
                   {p.name}
                 </Link>
@@ -89,20 +104,20 @@ const Header: React.FC = () => {
   return (
     <>
       {/* ================= HEADER ================= */}
-      <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/5">
-        <nav className="container mx-auto px-4 h-20 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-neutral-200">
+        <nav className={`container mx-auto px-4 ${compact ? 'h-16' : 'h-20'} flex items-center justify-between transition-all duration-200`}>
           {/* LOGO */}
           <Link 
             href="/" 
-            className="flex items-center gap-2 text-white font-bold text-xl group"
+            className="flex items-center gap-2 text-neutral-900 font-bold text-xl group"
             onClick={handleHomeClick}
           >
             <div className="relative">
-              <Image src="/logo.png" alt="Network Orbiter" width={42} height={42} className="relative z-10" />
+              <Image src="/logo.png" alt="Network Orbiter" width={compact ? 34 : 42} height={compact ? 34 : 42} className="relative z-10 transition-all duration-200" />
               <div className="absolute inset-0 bg-green-500/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
             <span className="tracking-tight">
-              Network <span className="text-green-400">Orbiter</span>
+              Network <span className="text-green-600">Orbiter</span>
             </span>
           </Link>
 
@@ -116,12 +131,13 @@ const Header: React.FC = () => {
               open={openMenu === 'solutions'}
               onOpen={() => setOpenMenu('solutions')}
               onClose={() => setOpenMenu(null)}
+              href="/solutions"
             >
               {solutions.map((s) => (
                 <Link
                   key={s.id}
-                  href={`/solutions#${s.id}`}
-                  className="block px-4 py-3 text-sm text-gray-300 hover:bg-green-500/5 hover:text-green-400 transition-colors rounded-lg"
+                  href={`/solutions/${s.id}`}
+                  className="block px-4 py-3 text-sm text-neutral-700 hover:bg-green-50 hover:text-green-700 transition-colors rounded-lg"
                 >
                   {s.navLabel}
                 </Link>
@@ -134,6 +150,7 @@ const Header: React.FC = () => {
               open={openMenu === 'products'}
               onOpen={() => setOpenMenu('products')}
               onClose={() => setOpenMenu(null)}
+              href="/products"
             >
               {desktopProductMenu}
             </HoverDropdown>
@@ -144,7 +161,7 @@ const Header: React.FC = () => {
 
           {/* ================= MOBILE TOGGLE ================= */}
           <button
-            className="lg:hidden text-white text-2xl"
+            className="lg:hidden text-neutral-900 text-2xl"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -155,7 +172,7 @@ const Header: React.FC = () => {
 
       {/* ================= MOBILE BACKDROP ================= */}
       <div
-        className={`fixed inset-0 bg-black/60 z-40 transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 bg-black/30 z-40 transition-opacity duration-300 lg:hidden ${
           mobileOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setMobileOpen(false)}
@@ -163,9 +180,9 @@ const Header: React.FC = () => {
 
       {/* ================= MOBILE DRAWER ================= */}
       <aside
-        className={`fixed top-0 right-0 h-full w-full max-w-sm bg-black z-50
+        className={`fixed top-0 right-0 h-full w-full max-w-sm bg-[#FCFBF9] z-50
         transform transition-transform duration-300 ease-out lg:hidden
-        ${mobileOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        ${mobileOpen ? 'translate-x-0' : 'translate-x-full'} shadow-2xl`}
       >
         <div className="h-full overflow-y-auto p-6 space-y-4">
           <MobileLink label="Home" onClick={() => navigate('/')} />
@@ -182,7 +199,7 @@ const Header: React.FC = () => {
               <MobileSubLink
                 key={s.id}
                 label={s.navLabel}
-                onClick={() => navigate(`/solutions#${s.id}`)}
+                onClick={() => navigate(`/solutions/${s.id}`)}
               />
             ))}
           </MobileAccordion>
@@ -234,14 +251,14 @@ const NavLink = ({ href, onClick, children }: any) => (
   <Link 
     href={href} 
     onClick={onClick}
-    className="text-gray-300 hover:text-green-400 transition-colors duration-200 font-medium"
+    className="text-neutral-800 hover:text-green-700 transition-colors duration-200 font-medium"
   >
     {children}
   </Link>
 );
 
 /* ---- Desktop hover dropdown (no flicker) ---- */
-const HoverDropdown = ({ label, open, onOpen, onClose, children }: any) => (
+const HoverDropdown = ({ label, open, onOpen, onClose, children, href }: any) => (
   <div
     className="relative"
     onMouseEnter={onOpen}
@@ -250,13 +267,20 @@ const HoverDropdown = ({ label, open, onOpen, onClose, children }: any) => (
     {/* Hover bridge to prevent gap */}
     <div className="absolute -bottom-3 left-0 w-full h-3" />
 
-    <button className="flex items-center gap-1 text-gray-300 hover:text-green-400 transition-colors duration-200 font-medium">
-      {label}
-      <Chevron open={open} />
-    </button>
+    {href ? (
+      <Link href={href} className="flex items-center gap-1 text-neutral-800 hover:text-green-700 transition-colors duration-200 font-medium">
+        {label}
+        <Chevron open={open} />
+      </Link>
+    ) : (
+      <button className="flex items-center gap-1 text-neutral-800 hover:text-green-700 transition-colors duration-200 font-medium">
+        {label}
+        <Chevron open={open} />
+      </button>
+    )}
 
     <div
-      className={`absolute top-full left-0 mt-1 w-80 bg-[#0a0a0a] border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl
+      className={`absolute top-full left-0 mt-1 w-80 bg-[#FCFBF9] border border-neutral-200 rounded-xl shadow-2xl backdrop-blur-xl
       transition-all duration-200 origin-top
       ${open ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
     >
@@ -281,7 +305,7 @@ const Chevron = ({ open }: { open: boolean }) => (
 const MobileLink = ({ label, onClick }: any) => (
   <button
     onClick={onClick}
-    className="block w-full text-left text-white py-3 text-lg hover:text-green-400 transition-colors"
+    className="block w-full text-left text-neutral-900 py-3 text-lg hover:text-green-700 transition-colors"
   >
     {label}
   </button>
@@ -290,7 +314,7 @@ const MobileLink = ({ label, onClick }: any) => (
 const MobileSubLink = ({ label, onClick }: any) => (
   <button
     onClick={onClick}
-    className="block w-full text-left text-gray-300 py-2 text-sm hover:text-green-400 transition-colors"
+    className="block w-full text-left text-neutral-800 py-2 text-sm hover:text-green-700 transition-colors"
   >
     {label}
   </button>
@@ -299,7 +323,7 @@ const MobileSubLink = ({ label, onClick }: any) => (
 const MobileSubSubLink = ({ label, onClick }: any) => (
   <button
     onClick={onClick}
-    className="block w-full text-left pl-6 text-gray-400 py-1 text-xs hover:text-green-400 transition-colors"
+    className="block w-full text-left pl-6 text-neutral-700 py-1 text-xs hover:text-green-700 transition-colors"
   >
     {label}
   </button>
@@ -309,7 +333,7 @@ const MobileAccordion = ({ title, open, onToggle, children }: any) => (
   <div>
     <button
       onClick={onToggle}
-      className="w-full flex justify-between items-center text-white py-2"
+      className="w-full flex justify-between items-center text-neutral-900 py-2"
     >
       {title}
       <Chevron open={open} />

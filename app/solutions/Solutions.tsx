@@ -2,68 +2,101 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import ElectricBorder from '@/components/ui/ElectricBorder';
 import { solutions, type SolutionNavItem } from './solutionsData';
+import Link from 'next/link';
 
-const AlternatingSolutionCard: React.FC<SolutionNavItem & { index: number }> = ({ id, navShortText, pageH1, headIntro, datasheet, icon: Icon, index }) => {
-  const reverse = index % 2 === 1;
+const SolutionCard: React.FC<SolutionNavItem & { index: number }> = ({ 
+  id, 
+  navShortText, 
+  pageH1, 
+  headIntro, 
+  datasheet, 
+  icon: Icon, 
+  image,
+  index 
+}) => {
   return (
-    <section id={id} className={`scroll-mt-24 bg-neutral-900 rounded-lg overflow-hidden shadow-sm transition-all duration-300 ${reverse ? '' : ''}`}>
-      <div className={`grid grid-cols-1 lg:grid-cols-2 ${reverse ? 'lg:[&>div:first-child]:order-2 lg:[&>div:last-child]:order-1' : ''}`}>
-        <div className="relative h-56 md:h-72 lg:h-full flex items-center justify-center bg-neutral-950">
-          <motion.div
-            initial={{ scale: 0.95, opacity: 0.85 }}
-            animate={{ scale: [0.95, 1.05, 0.95], opacity: [0.85, 1, 0.85] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            className="relative flex items-center justify-center w-full h-full"
-          >
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500/10 via-transparent to-transparent" />
-            <Icon className="w-24 h-24 md:w-32 md:h-32 text-green-400" />
-          </motion.div>
-        </div>
-        <div className="p-6 md:p-8 flex items-center">
-          <div>
-            <p className="text-xs md:text-sm text-green-400 mb-2">{navShortText}</p>
-            <h3 className="text-xl md:text-2xl font-semibold text-white mb-3">{pageH1}</h3>
-            <p className="text-sm md:text-base text-gray-300 leading-relaxed">{headIntro}</p>
-            {datasheet && (
-              <span className="mt-4 inline-block text-xs md:text-sm px-3 py-1 rounded border border-green-700 bg-green-500/10 text-green-400">
-                Datasheet: {datasheet}
-              </span>
-            )}
+    <Link href={`/solutions/${id}`} className="contents">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ 
+        boxShadow: "0 0 20px rgba(34, 197, 94, 0.15)",
+        borderColor: "rgba(34, 197, 94, 0.4)"
+      }}
+      whileTap={{ 
+        scale: 0.98,
+        boxShadow: "0 0 30px rgba(34, 197, 94, 0.25)"
+      }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className={`
+        relative overflow-hidden rounded-2xl group
+        h-[360px]
+        border border-white/10 transition-all duration-300
+      `}
+    >
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img 
+          src={image} 
+          alt={pageH1}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
+        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
+      </div>
+
+      {/* Content */}
+      <div className="absolute inset-0 p-6 flex flex-col justify-end">
+        <div className="transform transition-transform duration-300 group-hover:-translate-y-2">
+          {/* Icon Badge */}
+          <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-green-500/20 text-green-400 backdrop-blur-sm border border-green-500/30">
+            <Icon className="w-6 h-6" />
           </div>
+
+          <h3 className="font-bold text-white mb-2 text-2xl md:text-3xl">
+            {pageH1}
+          </h3>
+          
+          <p className="text-gray-300 text-sm leading-relaxed line-clamp-3">
+            {headIntro}
+          </p>
+
+          
         </div>
       </div>
-    </section>
+    </motion.div>
+    </Link>
   );
 };
 
-
 const Solutions: React.FC = () => {
   return (
-    <div className="w-full bg-black py-16">
-      <div className="max-w-6xl mx-auto px-4">
+    <div className="w-full bg-black py-20 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div className="mb-12 text-left">
-          <p className="text-xs md:text-sm text-gray-400 mb-2">
-            Home &gt; <span className="text-green-500 font-medium">Solutions</span>
+        <div className="mb-16">
+          <p className="text-sm text-gray-400 mb-2 font-mono">
+            HOME / <span className="text-green-500">SOLUTIONS</span>
           </p>
 
-          <h1 className="text-3xl md:text-4xl font-medium text-white tracking-tight mb-3">
-            NETWORK ORBITER WIRELESS SOLUTIONS
+          <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+            NETWORK ORBITER <span className="text-green-500">WIRELESS SOLUTIONS</span>
           </h1>
 
-          <p className="text-sm md:text-base text-gray-300 max-w-2xl">
-            Proven deployment scenarios for rural connectivity, WISP infrastructure,
-            enterprise networks, and mission-critical wireless systems.
+          <p className="text-lg text-gray-400 max-w-3xl">
+            Proven deployment scenarios for Rural Connectivity, WISP Infrastructure,
+            Enterprise Networks, and Mission-Critical Wireless Systems.
           </p>
         </div>
 
-        {/* Alternating Cards */}
-        <div className="space-y-10">
+        {/* Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {solutions.map((solution, idx) => (
-            <AlternatingSolutionCard key={solution.navLabel} index={idx} {...solution} />
+            <SolutionCard key={solution.navLabel} index={idx} {...solution} />
           ))}
         </div>
 

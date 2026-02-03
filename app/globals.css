@@ -6,9 +6,15 @@
   font-weight: 300;
   font-style: normal;
 }
+
 @keyframes custom-marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-custom-marquee {
@@ -61,14 +67,19 @@ body {
   margin: 0;
   padding: 0;
   font-family: "MyFont", sans-serif;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 /* Custom Animations for Revolution.tsx to avoid styled-jsx hydration issues */
 @keyframes wave {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) scaleX(1);
     opacity: 0.6;
   }
+
   50% {
     transform: translateY(-20px) scaleX(1.05);
     opacity: 1;
@@ -76,10 +87,13 @@ body {
 }
 
 @keyframes wave-reverse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) scaleX(1);
     opacity: 0.5;
   }
+
   50% {
     transform: translateY(20px) scaleX(0.95);
     opacity: 0.8;
@@ -87,10 +101,13 @@ body {
 }
 
 @keyframes pulse-slow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.3;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.6;
     transform: scale(1.1);

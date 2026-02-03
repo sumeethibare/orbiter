@@ -183,23 +183,42 @@ const Demo: React.FC = () => {
             <p className="text-md text-gray-400 max-w-lg leading-relaxed">
               <span className="text-green-500">Registered Address:</span> D-II-138 SECOND FLOOR J J COLONY MADANGIR, NEW DELHI, South Delhi, Delhi, India, 110062
             </p>
-            <div className="mt-8 w-full h-80 rounded-lg overflow-hidden shadow-xl cursor-pointer" onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('D-II-138 SECOND FLOOR J J COLONY MADANGIR, NEW DELHI, South Delhi, Delhi, India, 110062')}`, '_blank')}>
+            <div
+              className="mt-8 w-full h-80 rounded-lg overflow-hidden shadow-xl cursor-pointer relative z-0"
+              onClick={() =>
+                window.open(
+                  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    "D-II-138 SECOND FLOOR J J COLONY MADANGIR, NEW DELHI, South Delhi, Delhi, India, 110062"
+                  )}`,
+                  "_blank"
+                )
+              }
+            >
               {isClient && (
-                <MapContainer center={center} zoom={14} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
+                <MapContainer
+                  center={center}
+                  zoom={14}
+                  scrollWheelZoom={false}
+                  className="h-full w-full"
+                  style={{ position: "relative", zIndex: 0 }}
+                >
                   <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    attribution='&copy; OpenStreetMap contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
+
                   {markerIcon && (
                     <Marker position={center} icon={markerIcon}>
                       <Popup>
-                        D-II-138 SECOND FLOOR J J COLONY MADANGIR, NEW DELHI, South Delhi, Delhi, India, 110062
+                        D-II-138 SECOND FLOOR J J COLONY MADANGIR, NEW DELHI, South Delhi, Delhi,
+                        India, 110062
                       </Popup>
                     </Marker>
                   )}
                 </MapContainer>
               )}
             </div>
+
             <div className="mt-8 text-center lg:text-left">
               <div
                 className="block w-full text-center text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
@@ -239,9 +258,8 @@ const Demo: React.FC = () => {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleChange}
-                      className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${
-                        errors.firstName ? 'border-green-500' : 'border-neutral-700'
-                      }`}
+                      className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${errors.firstName ? 'border-green-500' : 'border-neutral-700'
+                        }`}
                     />
                     {errors.firstName && <p className="text-green-500 text-sm mt-1">{errors.firstName}</p>}
                   </div>
@@ -256,9 +274,8 @@ const Demo: React.FC = () => {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleChange}
-                      className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${
-                        errors.lastName ? 'border-green-500' : 'border-neutral-700'
-                      }`}
+                      className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${errors.lastName ? 'border-green-500' : 'border-neutral-700'
+                        }`}
                     />
                     {errors.lastName && <p className="text-green-500 text-sm mt-1">{errors.lastName}</p>}
                   </div>
@@ -275,9 +292,8 @@ const Demo: React.FC = () => {
                     name="organization"
                     value={formData.organization}
                     onChange={handleChange}
-                    className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${
-                      errors.organization ? 'border-green-500' : 'border-neutral-700'
-                    }`}
+                    className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${errors.organization ? 'border-green-500' : 'border-neutral-700'
+                      }`}
                   />
                   {errors.organization && <p className="text-green-500 text-sm mt-1">{errors.organization}</p>}
                 </div>
@@ -306,9 +322,8 @@ const Demo: React.FC = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${
-                        errors.email ? 'border-green-500' : 'border-neutral-700'
-                      }`}
+                      className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${errors.email ? 'border-green-500' : 'border-neutral-700'
+                        }`}
                     />
                     {errors.email && <p className="text-green-500 text-sm mt-1">{errors.email}</p>}
                   </div>
@@ -325,9 +340,8 @@ const Demo: React.FC = () => {
                       name="country"
                       value={formData.country}
                       onChange={handleChange}
-                      className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${
-                        errors.country ? 'border-green-500' : 'border-neutral-700'
-                      }`}
+                      className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${errors.country ? 'border-green-500' : 'border-neutral-700'
+                        }`}
                     >
                       <option value="">Select Country</option>
                       {countries.map(c => (
@@ -346,9 +360,8 @@ const Demo: React.FC = () => {
                       name="existingCustomer"
                       value={formData.existingCustomer}
                       onChange={handleChange}
-                      className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${
-                        errors.existingCustomer ? 'border-green-500' : 'border-neutral-700'
-                      }`}
+                      className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${errors.existingCustomer ? 'border-green-500' : 'border-neutral-700'
+                        }`}
                     >
                       <option value="">Select</option>
                       <option value="Yes">Yes</option>
@@ -368,9 +381,8 @@ const Demo: React.FC = () => {
                     name="application"
                     value={formData.application}
                     onChange={handleChange}
-                    className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${
-                      errors.application ? 'border-green-500' : 'border-neutral-700'
-                    }`}
+                    className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${errors.application ? 'border-green-500' : 'border-neutral-700'
+                      }`}
                   >
                     <option value="">Select</option>
                     {applications.map(app => (
@@ -390,9 +402,8 @@ const Demo: React.FC = () => {
                     name="howHeard"
                     value={formData.howHeard}
                     onChange={handleChange}
-                    className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${
-                      errors.howHeard ? 'border-green-500' : 'border-neutral-700'
-                    }`}
+                    className={`w-full bg-neutral-800 text-gray-100 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${errors.howHeard ? 'border-green-500' : 'border-neutral-700'
+                      }`}
                   >
                     <option value="">Select</option>
                     {howHeardOptions.map(h => (

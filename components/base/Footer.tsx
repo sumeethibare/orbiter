@@ -130,8 +130,8 @@ const Footer: React.FC = () => {
             {/* Policy links */}
             <ul className="flex flex-wrap justify-center gap-4 text-gray-400 text-sm">
               <li><Link href="/privacy-policy" className="hover:text-white">Privacy</Link></li>
-              <li><Link href="/terms" target="_blank" rel="noopener" className="hover:text-white">Terms</Link></li>
-              <li><Link href="/privacy-choices" target="_blank" rel="noopener" className="hover:text-white">Privacy Choices</Link></li>
+              <li><Link href="/privacy-policy" target="_blank" rel="noopener" className="hover:text-white">Terms</Link></li>
+              <li><Link href="/privacy-policy" target="_blank" rel="noopener" className="hover:text-white">Privacy Choices</Link></li>
             </ul>
           </div>
         </div>
